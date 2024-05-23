@@ -1,4 +1,5 @@
 import tkinter as tk
+from GridMaker import GridMaker
 
 class MainWindow:
 
@@ -12,15 +13,7 @@ class MainWindow:
         self.right_frame = tk.Frame(self.app, relief="groove", borderwidth=3)
         self.right_frame.grid(row=0, column=1)
 
-        self.left_frame_top = tk.Frame(self.left_frame)
-        self.left_frame_top.grid(row=0, column=0)
-        self.left_frame_bottom = tk.Frame(self.left_frame, relief="ridge", borderwidth=2)
-        self.left_frame_bottom.grid(row=1, column=0)
-
-        self.testlabel1 = tk.Label(self.left_frame_top, text="main left inner upper")
-        self.testlabel2 = tk.Label(self.left_frame_bottom, text="main left inner lower")
-        self.testlabel1.pack()
-        self.testlabel2.pack()
+        self.grid_maker = GridMaker(self.left_frame, 10)
 
         self.testlabel3 = tk.Label(self.right_frame, text="main right")
         self.testlabel3.pack()
