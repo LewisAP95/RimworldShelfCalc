@@ -19,6 +19,8 @@ class GridMaker:
         self.edit_button = Button(self.top_frame, text="Edit", command=self.toggle_edit)
         self.edit_button.grid(row=0, column=2)
 
+        self.editing_enabled = False
+
         #The grid window itself
         # Default maximum dimensions are 30x30
         self.tile_grid = []
@@ -26,15 +28,25 @@ class GridMaker:
         for x in range(size):
             self.tile_grid.append([])
             for y in range(size):
-                self.tile = tk.Checkbutton(self.bottom_frame, bd=1, padx=0, pady=0, width=2, indicatoron=False, bg="black", selectcolor="white")
+                self.tile = tk.Checkbutton(self.bottom_frame, bd=1, padx=0, pady=0, width=2, indicatoron=False, bg="black", selectcolor="white", state="disabled")
                 self.tile.grid(row=y, column=x)
                 self.tile_grid[x].append(self.tile)
 
     def clear(self):
         for x in self.tile_grid:
             for y in x:
-                y.flash()
                 y.deselect()
 
     def toggle_edit(self):
-        pass
+        if self.editing_enabled:
+            self.editing_enabled = False
+            self.edit_button.config(text="Edit")
+            for x in self.tile_grid:
+                for y in x:
+                    y.config(state="disabled")
+        else:
+            self.editing_enabled = True
+            self.edit_button.config(text="Stop editing")
+            for x in self.tile_grid:
+                for y in x:
+                    y.config(state="normal")
