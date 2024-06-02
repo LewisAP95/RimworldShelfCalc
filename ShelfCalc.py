@@ -1,5 +1,6 @@
 import tkinter as tk
 from GridMaker import GridMaker
+from OptionsPane import OptionsPane
 
 class MainWindow:
 
@@ -15,8 +16,7 @@ class MainWindow:
 
         self.grid_maker = GridMaker(self.left_frame, 10)
 
-        self.testlabel3 = tk.Label(self.right_frame, text="main right")
-        self.testlabel3.pack()
+        self.testlabel3 = OptionsPane(self.right_frame)
 
     def begin(self):
         self.app.mainloop()
