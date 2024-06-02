@@ -15,10 +15,12 @@ class OptionsPane:
         self.cut_corners_choice = tk.IntVar()
         self.cut_corners_button =  tk.Checkbutton(self.top_frame, text="Allow corner cutting?", variable=self.cut_corners_choice)
         self.cut_corners_button.grid(row=0, column=0, columnspan=2, sticky="NESW")
+        self.cut_corners_button.select()
 
         self.allow_climbing_choice = tk.IntVar()
         self.allow_climbing_button = tk.Checkbutton(self.top_frame, text="Allow climbing?", variable=self.allow_climbing_choice)
         self.allow_climbing_button.grid(row=1, column=0, columnspan=2, sticky="NESW")
+        self.allow_climbing_button.select()
 
         self.respect_paths_choice = tk.IntVar()
         self.respect_paths_button = tk.Checkbutton(self.top_frame, text="Respect other paths?", variable=self.respect_paths_choice)
@@ -28,17 +30,19 @@ class OptionsPane:
         self.method_label.grid(row=3, column=0, sticky="NESW")
         self.method_box = ttk.Combobox(self.top_frame, state="readonly", values=["Best first", "Worst first", "Random", "Grid fill"])
         self.method_box.grid(row=3, column=1, sticky="NESW")
+        self.method_box.current(0)
 
         self.placement_steps_label = tk.Label(self.top_frame, text="Max placement attempts:")
         self.placement_steps_label.grid(row=4, column=0, sticky="NESW")
-        self.placement_steps_box = ttk.Combobox(self.top_frame, state="readonly", values=list(range(101)))
+        self.placement_steps_box = ttk.Combobox(self.top_frame, state="readonly", values=list(range(1, 101)))
         self.placement_steps_box.grid(row=4, column=1, sticky="NESW")
+        self.placement_steps_box.current(4)
 
         self.time_limit_label = tk.Label(self.top_frame, text="Global time limit (seconds):")
         self.time_limit_label.grid(row=5, column=0, sticky="NESW")
-        self.time_limit_choice = tk.IntVar()
-        self.time_limit_entrybox = tk.Entry(self.top_frame, textvariable=self.time_limit_choice, exportselection=0)
+        self.time_limit_entrybox = tk.Entry(self.top_frame, exportselection=0)
         self.time_limit_entrybox.grid(row=5, column=1, sticky="NESW")
+        self.time_limit_entrybox.insert(0, "300")
 
         # Bottom frame UI elements
         self.back_button = tk.Button(self.bottom_frame, text="Go back", state="disabled")
@@ -47,7 +51,7 @@ class OptionsPane:
         self.help_button = tk.Button(self.bottom_frame, text="Help", command=self.display_help)
         self.help_button.grid(row=0, column=1, sticky="NESW")
 
-        self.default_button = tk.Button(self.bottom_frame, text="Reset to default")
+        self.default_button = tk.Button(self.bottom_frame, text="Reset to default", command=self.default_options)
         self.default_button.grid(row=0, column=2, sticky="NESW")
 
         self.proceed_button = tk.Button(self.bottom_frame, text="Proceed")
@@ -74,7 +78,18 @@ class OptionsPane:
         self.bottom_frame.grid_columnconfigure(3, weight=1)
         self.bottom_frame.grid_rowconfigure(0, weight=1)
 
+    def default_options(self):
+        # Sets all options back to their default values
+        self.cut_corners_button.select()
+        self.allow_climbing_button.select()
+        self.respect_paths_button.deselect()
+        self.method_box.current(0)
+        self.placement_steps_box.current(4)
+        self.time_limit_entrybox.delete(0, tk.END)
+        self.time_limit_entrybox.insert(0, "300")
+
     def display_help(self):
+        # The help/info and explanations popup window
         self.help_box = tk.messagebox.showinfo("Help/Info", "Cut corners - Controls whether calculated paths will be allowed to traverse diagonally across object corners.\n\n"
                                                "Allow climbing - Allows paths to consider routes where climbing is allowed. In game pawns can move across the top of items like shelves at no additional cost once they've spent the extra time initially 'climbing' onto one.\n\n"
                                                "Respect paths - If this is checked the route calculation will attempt to avoid new shelf placements which intersect an existing path.\n\n"
