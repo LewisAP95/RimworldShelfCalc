@@ -23,10 +23,13 @@ class MainWindow:
         self.app.grid_rowconfigure(0, weight=1)
 
         self.grid_maker = GridMaker(self.left_frame, 10)
-        self.options_pane = OptionsPane(self.right_frame)
+        self.options_pane = OptionsPane(self, self.right_frame)
 
     def begin(self):
         self.app.mainloop()
+
+    def enter_entrance_placement(self):
+        print(".< A")
 
 if __name__=="__main__":
     w = MainWindow()
